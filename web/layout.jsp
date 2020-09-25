@@ -16,7 +16,7 @@
           Mantenimientos
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Curso</a>
+          <a class="dropdown-item" href="ListarCursos">Curso</a>
           <a class="dropdown-item" href="#">Notas</a>
         </div>
       </li>

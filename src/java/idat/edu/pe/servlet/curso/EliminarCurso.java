@@ -8,10 +8,9 @@ package idat.edu.pe.servlet.curso;
 import com.google.gson.Gson;
 import idat.edu.pe.dao.CursoDAO;
 import idat.edu.pe.model.Curso;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,10 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author luis_
  */
-@WebServlet(name = "ListarCursos", urlPatterns = {"/ListarCursos"})
-public class ListarCursos extends HttpServlet {
+@WebServlet(name = "EliminarCurso", urlPatterns = {"/EliminarCurso"})
+public class EliminarCurso extends HttpServlet {
 
-   
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -39,10 +38,7 @@ public class ListarCursos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Curso> lstcursos = new CursoDAO().ListarCursos();
-        request.setAttribute("lstcursos", lstcursos);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/ListaCursos.jsp");
-        dispatcher.forward(request, response); 
+        
     }
 
     /**
@@ -56,10 +52,12 @@ public class ListarCursos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String resjson = new Gson().toJson(new CursoDAO().ListarCursos());
+        BufferedReader reader = request.getReader();
+        Curso objcurso = new Gson().fromJson(reader, Curso.class);
+        boolean respuesta = new CursoDAO().EliminarCurso(objcurso.getIdcurso());
+        String resjson = new Gson().toJson(respuesta);
         PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         out.print(resjson);
         out.flush();        
     }
